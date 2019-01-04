@@ -1,6 +1,10 @@
 # saasr
 
-A SaaS simulator
+A SaaS subscription simulator - a tool to learn about the statistical mechanics of subscriptions
+
+<!-- badges: start -->
+  [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+  <!-- badges: end -->
 
 # Why should I use it?
 
