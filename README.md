@@ -25,6 +25,8 @@ subscribers_by_day("weibull(0.3, 500)", rng = function(x) { rweibull(x, 0.3, 500
 ```
 
 ```r
+library(dplyr)
+library(ggplot2)
 subscribers_by_day("weibull(0.3, 500)", rng = function(x) { rweibull(x, 0.3, 500) }) %>%
   bind_rows(subscribers_by_day("weibull(0.5, 600)", rng = function(x) { rweibull(x, 0.5, 600) })) %>%
   ggplot(aes(x = day, y = subscribers, colour = factor(group))) +
@@ -38,6 +40,8 @@ subscribers_by_day("weibull(0.3, 500)", rng = function(x) { rweibull(x, 0.3, 500
 ```
 
 ```r
+library(dplyr)
+library(ggplot2)
 tibble:::tibble(time_to = rweibull(1e4, 0.3, 500),
                 censor = 1) %>%
   mutate(group = "weibull(0.3, 500)") %>%
