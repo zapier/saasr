@@ -39,9 +39,12 @@ subscribers_by_day("weibull(0.3, 500)", rng = function(x) { rweibull(x, 0.3, 500
   xlab("Days from start of business")
 ```
 
+![Visualization of subscribers](https://zappy.zapier.com/6AC2511D-A89E-48E5-88B9-D084111F2846.png)
+
 ```r
 library(dplyr)
 library(ggplot2)
+library(ggfortify)
 tibble:::tibble(time_to = rweibull(1e4, 0.3, 500),
                 censor = 1) %>%
   mutate(group = "weibull(0.3, 500)") %>%
@@ -52,8 +55,13 @@ tibble:::tibble(time_to = rweibull(1e4, 0.3, 500),
   ) %>%
   survival::survfit(survival::Surv(time_to, censor) ~ factor(group), data = .) %>%
   ggplot2::autoplot() +
-  coord_cartesian(xlim = c(0, 365))
+  coord_cartesian(xlim = c(0, 365)) +
+  ylab("Share of cohort remaining") +
+  xlab("Days from subscription purchase") +
+  ggtitle("Subscription churn (survival function)")
 ```
+
+![Subscription curve survival function](https://zappy.zapier.com/601203EB-2E37-42D7-AAE3-BDB1E418823C.png)
 
 
 
