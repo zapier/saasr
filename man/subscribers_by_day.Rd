@@ -4,9 +4,11 @@
 \alias{subscribers_by_day}
 \title{Simulation of subscribers}
 \usage{
-subscribers_by_day(dist = c("weibull", "lnorm"), ...)
+subscribers_by_day(cohorts, dist = c("weibull", "lnorm"), ...)
 }
 \arguments{
+\item{cohorts}{an integer vector of the count of subscriptions sold per day, assumed continuous from an origin day 1.}
+
 \item{dist}{the distribution characterizing churn (weibull and lnorm are implemented)}
 
 \item{...}{parameters that complete the characterization of churn, like shape = 0.8}
@@ -18,5 +20,6 @@ tibble::tibble
 Simulation of subscribers
 }
 \examples{
-subscribers_by_day("weibull", 0.8, 300)
+# rep(1e2, 10) is 100 subscriptions simulated for for ten days.
+subscribers_by_day(cohorts = rep(1e2, 100), dist = "weibull", 0.8, 300)
 }

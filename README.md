@@ -25,25 +25,26 @@ The simulator is still a really young piece of software. As young software often
 ```r
 devtools::install_github("zapier/saasr")
 library(saasr)
-subscribers_by_day("weibull(0.3, 500)", rng = function(x) { rweibull(x, 0.3, 500) })
+subscribers_by_day(cohorts = rep(1e2, 365*5), dist = "weibull", shape = 0.3, scale = 500)
 ```
 
 ```r
 library(dplyr)
 library(ggplot2)
-subscribers_by_day("weibull(0.3, 500)", rng = function(x) { rweibull(x, 0.3, 500) }) %>%
-  bind_rows(subscribers_by_day("weibull(0.5, 600)", rng = function(x) { rweibull(x, 0.5, 600) })) %>%
-  ggplot(aes(x = day, y = subscribers, colour = factor(group))) +
-  geom_point() +
-  scale_y_continuous(labels = scales::comma) +
-  scale_color_discrete(name = "Churn distribution") +
-  theme(legend.text = element_text(size = 18)) +
-  ylab("Subscribers") +
-  ggtitle("SaaS Simulator subscribers") +
-  xlab("Days from start of business")
+subscribers_by_day(cohorts = rep(1e2, 365*5), dist = "weibull", shape = 0.3, scale = 500) %>%
+    bind_rows(subscribers_by_day(cohorts = rep(1e2, 365*5), dist = "weibull", shape = 0.5, scale = 600)) %>%
+    bind_rows(subscribers_by_day(cohorts = rep(1e2, 365*5), dist = "lnorm", meanlog = 5, sdlog = 2)) %>%
+    ggplot(aes(x = day, y = subscribers, colour = factor(group))) +
+    geom_point() +
+    scale_y_continuous(labels = scales::comma) +
+    scale_color_discrete(name = "Churn distribution") +
+    theme(legend.text = element_text(size = 18)) +
+    ylab("Subscribers") +
+    ggtitle("SaaS Simulator subscribers") +
+    xlab("Days from start of business")
 ```
 
-![Visualization of subscribers](https://zappy.zapier.com/6AC2511D-A89E-48E5-88B9-D084111F2846.png)
+![Visualization of subscribers](https://zappy.zapier.com/BCEDC82F-BBCA-40E1-8E04-C46CA0C52A7C.png)
 
 ```r
 library(dplyr)
@@ -52,10 +53,12 @@ library(ggfortify)
 tibble:::tibble(time_to = rweibull(1e4, 0.3, 500),
                 censor = 1) %>%
   mutate(group = "weibull(0.3, 500)") %>%
-  bind_rows(
-    tibble:::tibble(time_to = rlnorm(1e4, 5.15, 1.77),
-                    censor = 1) %>%
-      mutate(group = "weibull(0.5, 600)")
+  bind_rows(tibble:::tibble(time_to = rweibull(1e4, 0.5, 600),
+                            censor = 1) %>%
+              mutate(group = "weibull(0.5, 600)"),
+            tibble:::tibble(time_to = rlnorm(1e4, 5, 2),
+                            censor = 1) %>%
+              mutate(group = "lnorm(5, 2)")
   ) %>%
   survival::survfit(survival::Surv(time_to, censor) ~ factor(group), data = .) %>%
   ggplot2::autoplot() +
@@ -65,7 +68,7 @@ tibble:::tibble(time_to = rweibull(1e4, 0.3, 500),
   ggtitle("Subscription churn (survival function)")
 ```
 
-![Subscription curve survival function](https://zappy.zapier.com/601203EB-2E37-42D7-AAE3-BDB1E418823C.png)
+![Subscription curve survival function](https://zappy.zapier.com/A0A138DE-52CF-4619-909C-9715B0B920E8.png)
 
 
 
