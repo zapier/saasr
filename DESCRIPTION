@@ -20,6 +20,7 @@ Imports:
     dplyr,
     tidyr,
     purrr,
-    tibble
+    tibble,
+    rlang
 Suggests:
     testthat
