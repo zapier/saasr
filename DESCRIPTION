@@ -10,7 +10,7 @@ Description: Subscriptions are a great way to finance the development of softwar
     but relatively little has been written about their statistical properties.
     This package attempts to provide tools to make analysis and simulation of
     subscription billing models easy.
-License: What license is it under?
+License: MIT
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
