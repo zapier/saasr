@@ -17,3 +17,6 @@ tibble::tibble
 \description{
 Map lifetimes to calendar days
 }
+\examples{
+cohort_to_calendar(lifetimes = rweibull(100, 0.8, 500))
+}

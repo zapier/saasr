@@ -17,3 +17,6 @@ tibble::tibble
 \description{
 Simulation of subscribers
 }
+\examples{
+subscribers_by_day("My experiment", function(x) { rweibull(x, 0.8, 500) })
+}
