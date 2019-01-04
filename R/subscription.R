@@ -9,7 +9,7 @@
 #' @examples
 cohort_to_calendar <- function(lifetimes, start_day = 1) {
   tibble::tibble(day = start_day:(10*365)) %>%
-    mutate(remaining_upgrades = purrr::map_dbl(day, function(x) {
+    dplyr::mutate(remaining_upgrades = purrr::map_dbl(day, function(x) {
       length(lifetimes[which(lifetimes >= x)])
     }))
 }
@@ -28,11 +28,11 @@ subscribers_by_day <- function(name, rng) {
     upgrade_day = 1:(10*365),
     upgrades = 1e1
   ) %>%
-    mutate(lifetimes = purrr::map2(upgrade_day, upgrades, function(x, N) { rng(N) })) %>%
-    mutate(lifetime_playout = purrr::map2(lifetimes, upgrade_day, cohort_to_calendar)) %>%
-    select(upgrade_day, lifetime_playout) %>%
+    dplyr::mutate(lifetimes = purrr::map2(upgrade_day, upgrades, function(x, N) { rng(N) })) %>%
+    dplyr::mutate(lifetime_playout = purrr::map2(lifetimes, upgrade_day, cohort_to_calendar)) %>%
+    dplyr::select(upgrade_day, lifetime_playout) %>%
     tidyr::unnest() %>%
-    group_by(day) %>%
-    summarise(subscribers = sum(remaining_upgrades)) %>%
-    mutate(group = !!name)
+    dplyr::group_by(day) %>%
+    dplyr::summarise(subscribers = sum(remaining_upgrades)) %>%
+    dplyr::mutate(group = !!name)
 }
