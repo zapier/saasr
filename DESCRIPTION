@@ -1,11 +1,15 @@
 Package: saasr
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Simulate subscription business models
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Authors@R: c(
+    person("Christopher", "Peters", , "chris.peters@zapier.com", role = c("aut", "cre")
+    ))
+Maintainer: Christopher Peters <chris.peters@zapier.com>
+Description: Subscriptions are a great way to finance the development of software,
+    but relatively little has been written about their statistical properties.
+    This package attempts to provide tools to make analysis and simulation of
+    subscription billing models easy.
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
