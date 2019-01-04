@@ -17,6 +17,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
 Imports:
     magrittr,
-    dplyr
+    dplyr,
+    tidyr
 Suggests:
     testthat

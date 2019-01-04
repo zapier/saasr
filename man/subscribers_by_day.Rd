@@ -4,12 +4,12 @@
 \alias{subscribers_by_day}
 \title{Simulation of subscribers}
 \usage{
-subscribers_by_day(name, rng)
+subscribers_by_day(dist = c("weibull", "lnorm"), ...)
 }
 \arguments{
-\item{name}{a length one character vector describing the name of the simulation}
+\item{dist}{the distribution characterizing churn (weibull and lnorm are implemented)}
 
-\item{rng}{a random number generator reflecting subscription lifetimes}
+\item{...}{parameters that complete the characterization of churn, like shape = 0.8}
 }
 \value{
 tibble::tibble
@@ -18,5 +18,5 @@ tibble::tibble
 Simulation of subscribers
 }
 \examples{
-subscribers_by_day("My experiment", function(x) { rweibull(x, 0.8, 500) })
+subscribers_by_day("weibull", 0.8, 300)
 }

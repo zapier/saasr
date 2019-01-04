@@ -17,24 +17,27 @@ cohort_to_calendar <- function(lifetimes, start_day = 1) {
 
 #' Simulation of subscribers
 #'
-#' @param name a length one character vector describing the name of the simulation
-#' @param rng a random number generator reflecting subscription lifetimes
+#' @param dist the distribution characterizing churn (weibull and lnorm are implemented)
+#' @param ... parameters that complete the characterization of churn, like shape = 0.8
 #'
 #' @return tibble::tibble
 #' @export
 #'
 #' @examples
-#' subscribers_by_day("My experiment", function(x) { rweibull(x, 0.8, 500) })
-subscribers_by_day <- function(name, rng) {
+#' subscribers_by_day("weibull", 0.8, 300)
+subscribers_by_day <- function(dist = c("weibull", "lnorm"), ...) {
+  dist <- match.arg(dist)
+  dots <- eval(substitute(alist(...)))
+  rng <- paste0("r", substitute(dist))
   tibble::tibble(
     upgrade_day = 1:(10*365),
     upgrades = 1e1
   ) %>%
-    dplyr::mutate(lifetimes = purrr::map2(upgrade_day, upgrades, function(x, N) { rng(N) })) %>%
+    dplyr::mutate(lifetimes = purrr::map2(upgrade_day, upgrades, function(x, N) { do.call(rng, c(list(n = N), dots)) })) %>%
     dplyr::mutate(lifetime_playout = purrr::map2(lifetimes, upgrade_day, cohort_to_calendar)) %>%
     dplyr::select(upgrade_day, lifetime_playout) %>%
     tidyr::unnest() %>%
     dplyr::group_by(day) %>%
     dplyr::summarise(subscribers = sum(remaining_upgrades)) %>%
-    dplyr::mutate(group = !!name)
+    dplyr::mutate(group = paste(c(dist, dots), collapse = ", "))
 }
