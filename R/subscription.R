@@ -7,6 +7,7 @@
 #' @export
 #'
 #' @examples
+#' cohort_to_calendar(lifetimes = rweibull(100, 0.8, 500))
 cohort_to_calendar <- function(lifetimes, start_day = 1) {
   tibble::tibble(day = start_day:(10*365)) %>%
     dplyr::mutate(remaining_upgrades = purrr::map_dbl(day, function(x) {
@@ -23,6 +24,7 @@ cohort_to_calendar <- function(lifetimes, start_day = 1) {
 #' @export
 #'
 #' @examples
+#' subscribers_by_day("My experiment", function(x) { rweibull(x, 0.8, 500) })
 subscribers_by_day <- function(name, rng) {
   tibble::tibble(
     upgrade_day = 1:(10*365),
